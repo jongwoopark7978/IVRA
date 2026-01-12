@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>IVRA Table</title>
+  <style>
+    /* Table setup */
+    table {
+      width: 100%;
+      table-layout: auto;   /* Let columns adapt to content */
+      border-collapse: collapse;
+      margin: 1em 0;
+      border: none;
+    }
+
+    /* Light pastel green header */
+    thead th {
+      background-color: #d5ecd4;
+      height: 30px;
+      line-height: 20px;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      word-wrap: break-word;
+      position: relative;
+    }
+    /* "With IVRA (Success)" in blue/bold */
+    thead .success-column {
+      color: blue;
+      font-weight: bold;
+    }
+
+    /* Table body cells automatically size to content */
+    tbody td {
+      border: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      vertical-align: middle;
+      word-wrap: break-word;
+      position: relative;
+    }
+
+    /* Optional striped rows */
+    tbody tr:nth-of-type(odd) {
+      background-color: #FFFFE0; /* light yellow */
+    }
+    tbody tr:nth-of-type(even) {
+      background-color: #E0FFFF; /* light blue */
+    }
+
+    /* Column width hints (not strict, with table-layout:auto) */
+    .success-column {
+      width: 30%;
+    }
+    .symbol-column {
+      width: 5%;
+    }
+    .hint-column {
+      width: 10%;
+    }
+    .fail-column {
+      width: 30%;
+      color: red;
+    }
+    .task-column {
+      width: 10%;
+    }
+
+    /* Videos in the table cells */
+    td video {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin-top: 2%;
+      margin-bottom: 2%;
+      margin-left: auto;
+      margin-right: auto;
+      object-fit: cover;
+      border-radius: 12px; /* Rounded corners */
+    }
+
+    /* Images in the table cells */
+    td img {
+      display: block;
+      width: 90%;
+      height: auto;
+      margin: 5% auto;
+      object-fit: contain;
+    }
+
+    /* Fancy symbols styling (arrows, plus) */
+    .fancy-arrow {
+      font-size: 24px;
+      color: #555;
+      font-family: "Arial", sans-serif;
+    }
+    .fancy-plus {
+      font-size: 24px;
+      color: #555;
+      font-family: "Arial", sans-serif;
+    }
+
+    /* highlight certain words in Task column */
+    .highlight {
+      font-weight: bold;
+      font-size: 110%;
+    }
+
+    /* ===== NEW SECTION: More IVRA Examples ===== */
+
+    /* Container for the extra videos */
+    .ivra-examples {
+      margin: 2em 0;
+    }
+
+    /* Title for the section */
+    .ivra-examples h2 {
+      margin-bottom: 1em;
+      font-size: 1.3em;
+      font-weight: bold;
+      text-align: left;
+      color: #333;
+    }
+
+    /* 
+       Grid layout for the extra videos: 
+       force 3 columns in each row. Each video is responsive in its cell.
+    */
+    .video-grid {
+      display: grid;
+      /* 3 columns wide, equally spaced */
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem; /* space between grid items */
+    }
+
+    .video-grid video {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============== Original Table ============== -->
+<table>
+  <thead>
+    <tr>
+      <th class="success-column">With IVRA (Success)</th>
+      <th class="symbol-column"></th>
+      <th class="hint-column">IVRA(Affinity Hint)</th>
+      <th class="symbol-column"></th>
+      <th class="fail-column">LLaRA Baseline (Fail)</th>
+      <th class="task-column">Task</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <!-- With IVRA (Success) -->
+      <td class="success-column">
+        <video autoplay loop muted>
+          <source src="videos/1_ivra.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-arrow">⬅️</span>
+      </td>
+      <td class="hint-column">
+        <img src="images/1c.png" alt="Affinity Hint">
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-plus">➕</span>
+      </td>
+      <td class="fail-column">
+        <video autoplay loop muted>
+          <source src="videos/1_baseline.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="task-column">
+        pick up the <span class="highlight">yellow duck</span> and drop it into a pan
+      </td>
+    </tr>
+
+    <tr>
+      <td class="success-column">
+        <video autoplay loop muted>
+          <source src="videos/2_ivra.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-arrow">⬅️</span>
+      </td>
+      <td class="hint-column">
+        <img src="images/2c.png" alt="Affinity Hint">
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-plus">➕</span>
+      </td>
+      <td class="fail-column">
+        <video autoplay loop muted>
+          <source src="videos/2_baseline.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="task-column">
+        pick up the <span class="highlight">short object</span> and place it on the pan
+      </td>
+    </tr>
+
+    <tr>
+      <td class="success-column">
+        <video autoplay loop muted>
+          <source src="videos/3_ivra.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-arrow">⬅️</span>
+      </td>
+      <td class="hint-column">
+        <img src="images/3c.png" alt="Affinity Hint">
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-plus">➕</span>
+      </td>
+      <td class="fail-column">
+        <video autoplay loop muted>
+          <source src="videos/3_baseline.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="task-column">
+        pick up the <span class="highlight">long object</span> and place it on the pan
+      </td>
+    </tr>
+
+    <tr>
+      <td class="success-column">
+        <video autoplay loop muted>
+          <source src="videos/4_ivra.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-arrow">⬅️</span>
+      </td>
+      <td class="hint-column">
+        <img src="images/4c.png" alt="Affinity Hint">
+      </td>
+      <td class="symbol-column">
+        <span class="fancy-plus">➕</span>
+      </td>
+      <td class="fail-column">
+        <video autoplay loop muted>
+          <source src="videos/4_baseline.webm" type="video/webm">
+          Your browser does not support the video tag.
+        </video>
+      </td>
+      <td class="task-column">
+        pick up object <span class="highlight">same color as the duck</span> and drop it into a pan
+      </td>
+    </tr>
+  </tbody>
+</table>
+<!-- ============= End of Table ============= -->
+
+<!-- NEW SECTION: More IVRA Examples -->
+<div class="ivra-examples">
+  <h2>More IVRA Examples</h2>
+  <div class="video-grid">
+    <!-- Display videos 7_ivra through 16_ivra, each in its own "grid cell" -->
+    <video autoplay loop muted>
+      <source src="videos/7_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <video autoplay loop muted>
+      <source src="videos/8_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <video autoplay loop muted>
+      <source src="videos/9_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <video autoplay loop muted>
+      <source src="videos/10_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+
+    <video autoplay loop muted>
+      <source src="videos/11_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <video autoplay loop muted>
+      <source src="videos/12_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <video autoplay loop muted>
+      <source src="videos/13_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+    <video autoplay loop muted>
+      <source src="videos/14_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+
+    <video autoplay loop muted>
+      <source src="videos/15_ivra.webm" type="video/webm">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+</div>
+
+</body>
+</html>
