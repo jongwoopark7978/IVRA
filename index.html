@@ -1,320 +1,677 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>IVRA Table</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IVRA: Improving Visual-Token Relations for Robot Action Policy with Training-Free Hint-Based Guidance</title>
+  <meta name="description" content="Project page for IVRA: Improving Visual-Token Relations for Robot Action Policy with Training-Free Hint-Based Guidance.">
   <style>
-    /* Table setup */
-    table {
-      width: 100%;
-      table-layout: auto;   /* Let columns adapt to content */
-      border-collapse: collapse;
-      margin: 1em 0;
-      border: none;
+    :root {
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --card-soft: #eef2f6;
+      --text: #1f2937;
+      --muted: #5b6472;
+      --accent: #2893f5;
+      --accent-dark: #1d7fdd;
+      --pill: #2f3136;
+      --pill-hover: #202226;
+      --border: rgba(15, 23, 42, 0.08);
+      --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+      --shadow-soft: 0 10px 24px rgba(15, 23, 42, 0.06);
+      --demo-header: #dcead5;
+      --demo-surface: #f3f0d4;
+      --demo-outline: rgba(31, 41, 55, 0.08);
+      --success: #2148ff;
+      --failure: #ff3030;
+      --hint: #111111;
+      --symbol-blue: #5c98ff;
+      --symbol-purple: #7e57ff;
     }
 
-    /* Light pastel green header */
-    thead th {
-      background-color: #d5ecd4;
-      height: 30px;
-      line-height: 20px;
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
       margin: 0;
-      padding: 0;
-      text-align: center;
-      vertical-align: middle;
-      word-wrap: break-word;
-      position: relative;
-    }
-    /* "With IVRA (Success)" in blue/bold */
-    thead .success-column {
-      color: blue;
-      font-weight: bold;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
     }
 
-    /* Table body cells automatically size to content */
-    tbody td {
-      border: none;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      vertical-align: middle;
-      word-wrap: break-word;
-      position: relative;
-    }
-
-    /* Optional striped rows */
-    tbody tr:nth-of-type(odd) {
-      background-color: #FFFFE0; /* light yellow */
-    }
-    tbody tr:nth-of-type(even) {
-      background-color: #E0FFFF; /* light blue */
-    }
-
-    /* Column width hints (not strict, with table-layout:auto) */
-    .success-column {
-      width: 30%;
-    }
-    .symbol-column {
-      width: 5%;
-    }
-    .hint-column {
-      width: 10%;
-    }
-    .fail-column {
-      width: 30%;
-      color: red;
-    }
-    .task-column {
-      width: 10%;
-    }
-
-    /* Videos in the table cells */
-    td video {
+    img, video {
+      max-width: 100%;
       display: block;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(1280px, calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 28px 0 18px;
+    }
+
+    
+    .hero h1 {
+      margin: 0 auto 18px;
+      max-width: 1080px;
+      font-size: clamp(2.35rem, 5vw, 4.0rem);
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      font-weight: 750;
+    }
+
+    .hero h2 {
+      margin: 0 auto 18px;
+      max-width: 1080px;
+      font-size: clamp(2.35rem, 5vw, 2.7rem);
+      line-height: 1.06;
+      letter-spacing: -0.04em;
+      font-weight: 750;
+      margin-top: 40px;
+    }
+
+    .title-accent {
+      color: var(--accent);
+    }
+
+    .authors {
+      margin: 0 auto;
+      max-width: 1200px;
+      font-size: clamp(1rem, 2vw, 1.45rem);
+      line-height: 1.45;
+      color: var(--accent-dark);
+      font-weight: 500;
+      margin-top: 40px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      background: var(--pill);
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 650;
+      font-size: 1rem;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.14);
+      transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .pill-link:hover,
+    .pill-link:focus-visible {
+      background: var(--pill-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
+      outline: none;
+    }
+
+    .pill-link svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      fill: currentColor;
+    }
+
+    .section {
+      padding: 28px 0;
+    }
+
+    .section h2 {
+      margin: 0 0 24px;
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+    }
+
+    .comparison-board {
+      max-width: 100%;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+
+    .comparison-header,
+    .comparison-row {
+      min-width: 1080px;
+    }
+
+    .comparison-header {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) 72px minmax(180px, 1.05fr) 72px minmax(0, 2fr);
+      align-items: center;
+      gap: 0;
+      margin-bottom: 16px;
+      background: var(--demo-header);
+      border-radius: 22px;
+      border: 1px solid var(--demo-outline);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .comparison-label {
+      padding: 14px 16px;
+      text-align: center;
+      font-size: clamp(1.05rem, 1.3vw, 1.45rem);
+      font-weight: 760;
+      line-height: 1.2;
+    }
+
+    .comparison-label.success-label { color: var(--success); }
+    .comparison-label.hint-label { color: var(--hint); }
+    .comparison-label.fail-label { color: var(--failure); }
+
+    .comparison-spacer {
+      height: 100%;
+      background: var(--demo-header);
+    }
+
+    .comparison-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .comparison-row {
+      background: var(--card);
+      border: 1px solid var(--demo-outline);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .comparison-visuals {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) 72px minmax(180px, 1.05fr) 72px minmax(0, 2fr);
+      align-items: center;
+      gap: 0;
+      padding: 14px 16px;
+      background: var(--demo-surface);
+    }
+
+    .comparison-panel {
+      min-width: 0;
+    }
+
+    .media-frame,
+    .hint-frame {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      background: #ffffff;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+    }
+
+    .comparison-video {
       width: 100%;
-      height: auto;
-      margin-top: 2%;
-      margin-bottom: 2%;
-      margin-left: auto;
-      margin-right: auto;
+      aspect-ratio: 16 / 9;
       object-fit: cover;
-      border-radius: 12px; /* Rounded corners */
+      background: #111827;
     }
 
-    /* Images in the table cells */
-    td img {
-      display: block;
-      width: 90%;
-      height: auto;
-      margin: 5% auto;
+    .hint-frame {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100%;
+      padding: 12px;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .hint-image {
+      width: min(100%, 220px);
+      max-height: 260px;
       object-fit: contain;
     }
 
-    /* Fancy symbols styling (arrows, plus) */
-    .fancy-arrow {
-      font-size: 24px;
-      color: #555;
-      font-family: "Arial", sans-serif;
-    }
-    .fancy-plus {
-      font-size: 24px;
-      color: #555;
-      font-family: "Arial", sans-serif;
+    .symbol-panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* highlight certain words in Task column */
-    .highlight {
-      font-weight: bold;
-      font-size: 110%;
+    .comparison-symbol {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 54px;
+      height: 54px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+      font-size: 2.3rem;
+      font-weight: 800;
+      line-height: 1;
     }
 
-    /* ===== NEW SECTION: More IVRA Examples ===== */
+    .comparison-symbol.arrow { color: var(--symbol-blue); }
+    .comparison-symbol.plus { color: var(--symbol-purple); }
 
-    /* Container for the extra videos */
-    .ivra-examples {
-      margin: 2em 0;
+    .comparison-caption {
+      padding: 18px 24px 22px;
+      text-align: center;
+      background: #ffffff;
     }
 
-    /* Title for the section */
-    .ivra-examples h2 {
-      margin-bottom: 1em;
-      font-size: 1.3em;
-      font-weight: bold;
-      text-align: left;
-      color: #333;
+    .task-name {
+      margin: 0;
+      font-size: 1.35rem;
+      line-height: 1.25;
+      font-weight: 760;
+      letter-spacing: -0.02em;
+      color: #111827;
     }
 
-    /* 
-       Grid layout for the extra videos: 
-       force 3 columns in each row. Each video is responsive in its cell.
-    */
-    .video-grid {
-      display: grid;
-      /* 3 columns wide, equally spaced */
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem; /* space between grid items */
+    .task-prompt {
+      margin: 10px 0 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: clamp(1.1rem, 1.75vw, 1.45rem);
+      line-height: 1.45;
+      font-weight: 700;
+      color: #111827;
+      white-space: normal;
     }
 
-    .video-grid video {
+    .abstract-box {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 28px 32px;
+      background: #eff2f5;
+      border-left: 4px solid var(--accent);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .abstract-box p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: #202837;
+    }
+
+    .figure-card {
+      padding: 18px;
+      max-width: 1040px;
+      margin: 0 auto;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .figure-card img {
       width: 100%;
-      height: auto;
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .figure-card figcaption {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .example-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-soft);
+      padding: 12px;
+    }
+
+    .example-card video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 14px;
+      background: #111827;
       object-fit: cover;
-      border-radius: 12px;
+    }
+
+    .bibtex-card {
+      padding: 24px;
+      max-width: 1080px;
+      margin: 0 auto;
+      overflow-x: auto;
+      background: #eff2f5;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .bibtex-card pre {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 0.98rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .footer-space {
+      height: 22px;
+    }
+
+    @media (max-width: 960px) {
+      .examples-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 760px) {
+      .hero {
+        padding-top: 24px;
+      }
+
+      .comparison-symbol {
+        width: 46px;
+        height: 46px;
+        font-size: 2rem;
+      }
+
+      .abstract-box,
+      .figure-card,
+      .bibtex-card {
+        padding: 22px;
+      }
+
+      .examples-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .section {
+        padding: 24px 0;
+      }
     }
   </style>
 </head>
 <body>
+  <main class="container">
+    <section class="hero">
+      <h1><span class="title-accent">IVRA</span></h1>
+      <h2><span class="title-accent">I</span>mproving <span class="title-accent">V</span>isual-Token <span class="title-accent">R</span>elations for Robot <span class="title-accent">A</span>ction Policy with Training-Free Hint-Based Guidance</h2>
+      <p class="authors">Jongwoo Park, Kanchana Ranasinghe, Jinhyeok Jang, Cristina Mata, Yoo Sung Jang, Michael S Ryoo</p>
+      <div class="button-row">
+        <a class="pill-link" href="https://arxiv.org/pdf/2601.16207" target="_blank" rel="noopener noreferrer" aria-label="Open IVRA arXiv PDF">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.75A2.75 2.75 0 0 0 3.25 6.5v11A2.75 2.75 0 0 0 6 20.25h12A2.75 2.75 0 0 0 20.75 17.5v-7.38a.75.75 0 0 0-1.5 0v7.38c0 .69-.56 1.25-1.25 1.25H6c-.69 0-1.25-.56-1.25-1.25v-11c0-.69.56-1.25 1.25-1.25h5.38a.75.75 0 0 0 0-1.5H6Zm8.5 0a.75.75 0 0 0 0 1.5h3.69l-8.72 8.72a.75.75 0 1 0 1.06 1.06l8.72-8.72V10a.75.75 0 0 0 1.5 0V4.5a.75.75 0 0 0-.75-.75H14.5Z"/></svg>
+          <span>arXiv</span>
+        </a>
+        <a class="pill-link" href="https://github.com/jongwoopark7978/IVRA" target="_blank" rel="noopener noreferrer" aria-label="Open IVRA code repository">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.25 8a.75.75 0 0 1 0 1.5H5.56l3.97 3.97a.75.75 0 0 1-1.06 1.06L3.22 9.28a.75.75 0 0 1 0-1.06l5.25-5.25a.75.75 0 1 1 1.06 1.06L5.56 8h2.69Zm7.5 0h2.69l-3.97-3.97a.75.75 0 1 1 1.06-1.06l5.25 5.25a.75.75 0 0 1 0 1.06l-5.25 5.25a.75.75 0 1 1-1.06-1.06l3.97-3.97h-2.69a.75.75 0 0 1 0-1.5Z"/></svg>
+          <span>Code</span>
+        </a>
+        <a class="pill-link" href="#examples" aria-label="Jump to demo videos">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 5.25a2.25 2.25 0 0 0-2.25 2.25v9a2.25 2.25 0 0 0 3.46 1.9l7.2-4.5a2.25 2.25 0 0 0 0-3.8l-7.2-4.5a2.24 2.24 0 0 0-1.21-.35Z"/></svg>
+          <span>More Demos</span>
+        </a>
+        <a class="pill-link" href="#bibtex" aria-label="Jump to BibTeX section">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.75 4.5A2.25 2.25 0 0 0 4.5 6.75v10.5a2.25 2.25 0 0 0 2.25 2.25h10.5a2.25 2.25 0 0 0 2.25-2.25V9.56a.75.75 0 0 0-.22-.53l-4.31-4.31a.75.75 0 0 0-.53-.22H6.75Zm7.5 1.81 2.94 2.94h-2.19a.75.75 0 0 1-.75-.75V6.31ZM8 12.25a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 8 12.25Zm0 3.5a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75Z"/></svg>
+          <span>BibTeX</span>
+        </a>
+      </div>
+    </section>
 
-<!-- ============== Original Table ============== -->
-<table>
-  <thead>
-    <tr>
-      <th class="success-column">With IVRA (Success)</th>
-      <th class="symbol-column"></th>
-      <th class="hint-column">IVRA(Affinity Hint)</th>
-      <th class="symbol-column"></th>
-      <th class="fail-column">LLaRA Baseline (Fail)</th>
-      <th class="task-column">Task</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <!-- With IVRA (Success) -->
-      <td class="success-column">
-        <video autoplay loop muted>
-          <source src="videos/1_ivra.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-arrow">⬅️</span>
-      </td>
-      <td class="hint-column">
-        <img src="images/1c.png" alt="Affinity Hint">
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-plus">➕</span>
-      </td>
-      <td class="fail-column">
-        <video autoplay loop muted>
-          <source src="videos/1_baseline.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="task-column">
-        pick up the <span class="highlight">yellow duck</span> and drop it into a pan
-      </td>
-    </tr>
+    <section id="demos" class="section">
+      <h2>Demo Videos</h2>
+      <div class="comparison-board" aria-label="IVRA vs baseline demo comparison rows">
+        <div class="comparison-header">
+          <div class="comparison-label success-label">With IVRA (Success)</div>
+          <div class="comparison-spacer" aria-hidden="true"></div>
+          <div class="comparison-label hint-label">IVRA (Affinity Hint)</div>
+          <div class="comparison-spacer" aria-hidden="true"></div>
+          <div class="comparison-label fail-label">LLaRA Baseline (Fail)</div>
+        </div>
 
-    <tr>
-      <td class="success-column">
-        <video autoplay loop muted>
-          <source src="videos/2_ivra.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-arrow">⬅️</span>
-      </td>
-      <td class="hint-column">
-        <img src="images/2c.png" alt="Affinity Hint">
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-plus">➕</span>
-      </td>
-      <td class="fail-column">
-        <video autoplay loop muted>
-          <source src="videos/2_baseline.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="task-column">
-        pick up the <span class="highlight">short object</span> and place it on the pan
-      </td>
-    </tr>
+        <div class="comparison-list">
+          <article class="comparison-row">
+            <div class="comparison-visuals">
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/1_rgb.png" aria-label="With IVRA success video for picking up the yellow duck and dropping it into a pan">
+                    <source src="videos/1_ivra.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol arrow">←</span></div>
+              <div class="comparison-panel">
+                <div class="hint-frame">
+                  <img class="hint-image" src="images/1c.png" alt="IVRA affinity hint map for the cluttered localization task.">
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol plus">+</span></div>
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/1_rgb.png" aria-label="LLaRA baseline failure video for picking up the yellow duck and dropping it into a pan">
+                    <source src="videos/1_baseline.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-caption">
+              <p class="task-name">Cluttered Localization Task</p>
+              <p class="task-prompt">&lt;Pick up the yellow duck and drop it into a pan&gt;</p>
+            </div>
+          </article>
 
-    <tr>
-      <td class="success-column">
-        <video autoplay loop muted>
-          <source src="videos/3_ivra.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-arrow">⬅️</span>
-      </td>
-      <td class="hint-column">
-        <img src="images/3c.png" alt="Affinity Hint">
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-plus">➕</span>
-      </td>
-      <td class="fail-column">
-        <video autoplay loop muted>
-          <source src="videos/3_baseline.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="task-column">
-        pick up the <span class="highlight">long object</span> and place it on the pan
-      </td>
-    </tr>
+          <article class="comparison-row">
+            <div class="comparison-visuals">
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/2_rgb.png" aria-label="With IVRA success video for picking up the short object and placing it on the pan">
+                    <source src="videos/2_ivra.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol arrow">←</span></div>
+              <div class="comparison-panel">
+                <div class="hint-frame">
+                  <img class="hint-image" src="images/2c.png" alt="IVRA affinity hint map for the relative height short-object task.">
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol plus">+</span></div>
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/2_rgb.png" aria-label="LLaRA baseline failure video for picking up the short object and placing it on the pan">
+                    <source src="videos/2_baseline.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-caption">
+              <p class="task-name">Relative Height Task</p>
+              <p class="task-prompt">&lt;Pick up the short object and place it on the pan&gt;</p>
+            </div>
+          </article>
 
-    <tr>
-      <td class="success-column">
-        <video autoplay loop muted>
-          <source src="videos/4_ivra.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-arrow">⬅️</span>
-      </td>
-      <td class="hint-column">
-        <img src="images/4c.png" alt="Affinity Hint">
-      </td>
-      <td class="symbol-column">
-        <span class="fancy-plus">➕</span>
-      </td>
-      <td class="fail-column">
-        <video autoplay loop muted>
-          <source src="videos/4_baseline.webm" type="video/webm">
-          Your browser does not support the video tag.
-        </video>
-      </td>
-      <td class="task-column">
-        pick up object <span class="highlight">same color as the duck</span> and drop it into a pan
-      </td>
-    </tr>
-  </tbody>
-</table>
-<!-- ============= End of Table ============= -->
+          <article class="comparison-row">
+            <div class="comparison-visuals">
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/3_rgb.png" aria-label="With IVRA success video for picking up the long object and placing it on the pan">
+                    <source src="videos/3_ivra.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol arrow">←</span></div>
+              <div class="comparison-panel">
+                <div class="hint-frame">
+                  <img class="hint-image" src="images/3c.png" alt="IVRA affinity hint map for the relative height long-object task.">
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol plus">+</span></div>
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/3_rgb.png" aria-label="LLaRA baseline failure video for picking up the long object and placing it on the pan">
+                    <source src="videos/3_baseline.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-caption">
+              <p class="task-name">Relative Height Task</p>
+              <p class="task-prompt">&lt;Pick up the long object and place it on the pan&gt;</p>
+            </div>
+          </article>
 
-<!-- NEW SECTION: More IVRA Examples -->
-<div class="ivra-examples">
-  <h2>More IVRA Examples</h2>
-  <div class="video-grid">
-    <!-- Display videos 7_ivra through 16_ivra, each in its own "grid cell" -->
-    <video autoplay loop muted>
-      <source src="videos/7_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <video autoplay loop muted>
-      <source src="videos/8_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <video autoplay loop muted>
-      <source src="videos/9_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <video autoplay loop muted>
-      <source src="videos/10_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
+          <article class="comparison-row">
+            <div class="comparison-visuals">
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/4_rgb.png" aria-label="With IVRA success video for picking up the object with the same color as the duck and dropping it into a pan">
+                    <source src="videos/4_ivra.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol arrow">←</span></div>
+              <div class="comparison-panel">
+                <div class="hint-frame">
+                  <img class="hint-image" src="images/4c.png" alt="IVRA affinity hint map for the color match task.">
+                </div>
+              </div>
+              <div class="symbol-panel" aria-hidden="true"><span class="comparison-symbol plus">+</span></div>
+              <div class="comparison-panel">
+                <div class="media-frame">
+                  <video class="comparison-video" autoplay loop muted playsinline preload="metadata" poster="images/4_rgb.png" aria-label="LLaRA baseline failure video for picking up the object with the same color as the duck and dropping it into a pan">
+                    <source src="videos/4_baseline.webm" type="video/webm">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              </div>
+            </div>
+            <div class="comparison-caption">
+              <p class="task-name">Color Match Task</p>
+              <p class="task-prompt">&lt;Pick up object same color as the duck and drop it into a pan&gt;</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-    <video autoplay loop muted>
-      <source src="videos/11_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <video autoplay loop muted>
-      <source src="videos/12_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <video autoplay loop muted>
-      <source src="videos/13_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-    <video autoplay loop muted>
-      <source src="videos/14_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
+    <section id="abstract" class="section">
+      <h2>Abstract</h2>
+      <div class="abstract-box">
+        <p>Many Vision-Language-Action (VLA) models flatten image patches into a 1D token sequence, weakening the 2D spatial cues needed for precise manipulation. We introduce IVRA, a lightweight, training-free method that improves spatial understanding by exploiting affinity hints already available in the model's built-in vision encoder, without requiring any external encoder or retraining. IVRA selectively injects these affinity signals into a language-model layer in which instance-level features reside. This inference-time intervention realigns visual-token interactions and better preserves geometric structure while keeping all model parameters fixed. We demonstrate the generality of IVRA by applying it to diverse VLA architectures (LLaRA, OpenVLA, and FLOWER) across simulated benchmarks spanning both 2D and 3D manipulation (VIMA and LIBERO) and on various real-robot tasks. On 2D VIMA, IVRA improves average success by +4.2% over the baseline LLaRA in a low-data regime. On 3D LIBERO, it yields consistent gains over the OpenVLA and FLOWER baselines, including improvements when baseline accuracy is near saturation (96.3% to 97.1%).</p>
+      </div>
+    </section>
 
-    <video autoplay loop muted>
-      <source src="videos/15_ivra.webm" type="video/webm">
-      Your browser does not support the video tag.
-    </video>
-  </div>
-</div>
+    <section id="method" class="section">
+      <h2>Architecture</h2>
+      <figure class="figure-card">
+        <img src="images/overview_.png" alt="IVRA architecture overview showing affinity-guided token mixing and sharper affinity maps after applying IVRA.">
+        <figcaption>(a) <strong>Left:</strong> A frozen vision encoder provides an affinity hint that guides token mixing with weighted pooled tokens, preserving instance-level cues and improving manipulation policy quality. Brighter regions indicate higher affinity relative to the reference point (red dot). (b) <strong>Right:</strong> Affinity maps after applying IVRA shows sharper object boundaries and clearer object separation, aiding precise robot manipulation.</figcaption>
+      </figure>
+    </section>
 
+    <section id="examples" class="section">
+      <h2>More Demos of IVRA</h2>
+      <div class="examples-grid">
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 7">
+            <source src="videos/7_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 8">
+            <source src="videos/8_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 9">
+            <source src="videos/9_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 10">
+            <source src="videos/10_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 11">
+            <source src="videos/11_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 12">
+            <source src="videos/12_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 13">
+            <source src="videos/13_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 14">
+            <source src="videos/14_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 15">
+            <source src="videos/15_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+        <article class="example-card">
+          <video autoplay loop muted playsinline preload="metadata" aria-label="Additional IVRA example 16">
+            <source src="videos/16_ivra.webm" type="video/webm">
+            Your browser does not support the video tag.
+          </video>
+        </article>
+      </div>
+    </section>
+
+    <section id="bibtex" class="section">
+      <h2>BibTeX</h2>
+      <div class="bibtex-card">
+<pre><code>@article{park2026ivra,
+  title={IVRA: Improving Visual-Token Relations for Robot Action Policy with Training-Free Hint-Based Guidance},
+  author={Park, Jongwoo and Ranasinghe, Kanchana and Jang, Jinhyeok and Mata, Cristina and Jang, Yoo Sung and Ryoo, Michael S},
+  journal={arXiv preprint arXiv:2601.16207},
+  year={2026}
+}</code></pre>
+      </div>
+    </section>
+
+    <div class="footer-space" aria-hidden="true"></div>
+  </main>
 </body>
 </html>
